@@ -9,10 +9,21 @@
 <body>
   <!-- Add a wrapper div so CSS can center and style it -->
   <div class="container">
-    <h1>Salam negrilos, please confirm the below!</h1>
-    <p>you go $ if Max is pidar, or # if Max is gay</p>
-    <!-- Add a demo button just to see the accent color -->
-    <a class="button" href="#">Demo button</a>
+  <h1>Pick one</h1>
+  <p class="muted">Two choices. See live percentages below.</p>
+
+  <div class="poll">
+    <button id="btnDollar" class="choice">$</button>
+    <button id="btnHash" class="choice">#</button>
   </div>
-</body>
-</html>
+
+  <div class="stats">
+    <div><strong>$</strong> <span id="pctDollar">0%</span></div>
+    <div><strong>#</strong> <span id="pctHash">0%</span></div>
+    <div class="total">Total votes: <span id="totalVotes">0</span></div>
+    <div class="note">One vote per browser (stored locally).</div>
+  </div>
+</div>
+
+<!-- add this before </body> -->
+<script src="script.js"></script>
