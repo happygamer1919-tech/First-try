@@ -1,18 +1,56 @@
-/* all your current styles … */
-:root { … }
-body { … }
-.container { … }
-h1 { … }
-p { … }
-.button { … }
+/* ===== Base theme ===== */
+:root {
+  --bg: #0f172a;     /* deep slate/navy */
+  --panel: #111827;  /* dark panel */
+  --text: #e5e7eb;   /* soft light text */
+  --muted: #9ca3af;  /* muted text */
+  --accent: #22d3ee; /* cyan accent (unused here but handy) */
+}
 
-/* then at the very bottom, paste the new stuff */
-.muted { opacity: .8; }
+* { box-sizing: border-box; }
 
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+
+  /* center content */
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+.container {
+  width: min(800px, 92vw);
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem 1.5rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+
+/* Headings & text */
+h1 {
+  margin: 0 0 .5rem;
+  font-size: clamp(1.6rem, 2.2vw + 1rem, 2.2rem);
+}
+
+.subtitle {
+  margin: 0 0 1rem;
+  color: var(--muted);
+}
+
+/* Utility */
+.hidden { display: none !important; }
+
+/* ===== Poll styles ===== */
 .poll {
   display: flex;
   gap: .75rem;
-  margin: 1rem 0 0.75rem;
+  margin: .5rem 0 0.75rem;
 }
 
 .choice {
@@ -22,19 +60,19 @@ p { … }
   padding: .7rem 1.1rem;
   font-weight: 800;
   cursor: pointer;
-  background: #22c55e;     /* green */
-  color: #06250f;
+  background: #22c55e;   /* green */
+  color: #06250f;        /* dark text for contrast */
   box-shadow: 0 4px 12px rgba(0,0,0,.25);
+  transition: transform .05s ease, filter .1s ease, opacity .2s ease;
 }
-.choice:hover { filter: brightness(1.05); }
+.choice:hover { filter: brightness(1.06); }
 .choice:active { transform: translateY(1px); }
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, auto);
-  gap: 1rem 2rem;
-  align-items: center;
-  margin-top: .5rem;
+.choice:disabled {
+  opacity: .6;
+  cursor: default;
 }
-.stats .total { opacity: .9; }
-.stats .note { grid-column: 1 / -1; font-size: .9rem; opacity: .7; }
+
+.thanks {
+  margin-top: .5rem;
+  font-weight: 700;
+}
