@@ -1,29 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>First Try</title>
-  <!-- Link your CSS file -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Add a wrapper div so CSS can center and style it -->
   <div class="container">
-  <h1>Pick one</h1>
-  <p class="muted">Two choices. See live percentages below.</p>
+    <h1>Salam negriloizi, please choose from below:</h1>
 
-  <div class="poll">
-    <button id="btnDollar" class="choice">$</button>
-    <button id="btnHash" class="choice">#</button>
+    <p class="subtitle">If Max is pidar press <strong>$</strong><br/>If Max is gay press <strong>#</strong></p>
+
+    <div class="poll">
+      <button id="btnDollar" class="choice">$</button>
+      <button id="btnHash" class="choice">#</button>
+    </div>
+
+    <p id="thanks" class="thanks hidden">Thank you.</p>
   </div>
 
-  <div class="stats">
-    <div><strong>$</strong> <span id="pctDollar">0%</span></div>
-    <div><strong>#</strong> <span id="pctHash">0%</span></div>
-    <div class="total">Total votes: <span id="totalVotes">0</span></div>
-    <div class="note">One vote per browser (stored locally).</div>
-  </div>
-</div>
-
-<!-- add this before </body> -->
-<script src="script.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
