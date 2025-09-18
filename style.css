@@ -39,12 +39,24 @@ body{
   border-bottom:1px solid var(--border);
 }
 .site-header .wrap{ display:flex; align-items:center; justify-content:space-between; padding: .75rem 0; }
-.brand{ color:var(--text); text-decoration:none; font-weight:800; letter-spacing:.3px; }
-.nav a{ color:var(--muted); text-decoration:none; margin-left:1rem; padding:.4rem .6rem; border-radius:.5rem; }
+
+.brand{
+  display:flex; align-items:center; gap:.5rem;
+  color:var(--text); text-decoration:none; font-weight:800; letter-spacing:.3px;
+}
+.logo{
+  height: 36px; width: auto; vertical-align: middle;
+}
+
+.nav a{
+  color:var(--muted); text-decoration:none;
+  margin-left:1rem; padding:.4rem .6rem; border-radius:.5rem;
+}
 .nav a:hover{ background:rgba(255,255,255,.06); color:white; }
 
 /* Hero */
 .hero h1{ margin:0 0 .4rem; font-size: clamp(1.8rem, 2.2vw + 1rem, 2.6rem); }
+.hero-logo{ max-width:140px; margin-bottom:1rem; }
 .muted{ color:var(--muted); }
 
 /* Buttons */
@@ -86,7 +98,7 @@ body{
 /* Utilities */
 .hidden{ display:none !important; }
 
-/* Better anchor snapping below sticky header */
+/* Anchor offset below sticky header */
 #home, #poll, #about, #contact{ scroll-margin-top: 72px; }
 
 /* Small screens */
