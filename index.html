@@ -3,17 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>First Try</title>
-  <meta name="description" content="Tiny demo site with a playful two-button poll." />
-  <link rel="icon" href="favicon.ico">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <title>Bounty</title>
+  <meta name="description" content="Minimal site with a playful two-button poll." />
+
+  <!-- Use your logo for tab/app icons -->
+  <link rel="icon" href="bounty.png">
+  <link rel="apple-touch-icon" href="bounty.png">
+
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Header -->
+  <!-- Sticky header -->
   <header class="site-header">
     <div class="wrap">
-      <a href="#home" class="brand">First-try</a>
+      <a href="#home" class="brand">
+        <img src="bounty.png" alt="Bounty logo" class="logo">
+        <span>Bounty</span>
+      </a>
       <nav class="nav">
         <a href="#home">Home</a>
         <a href="#poll">Poll</a>
@@ -26,9 +32,10 @@
   <main>
     <!-- HERO -->
     <section id="home" class="section hero">
-      <div class="wrap card">
-        <h1>Welcome. Choose your destiny (kinda).</h1>
-        <p class="muted">Scroll down or jump to the poll and click one of the two green buttons.</p>
+      <div class="wrap card center">
+        <img src="bounty.png" alt="Bounty logo" class="hero-logo">
+        <h1>Welcome aboard.</h1>
+        <p class="muted">Scroll or jump to the poll to press one of the two green buttons.</p>
         <p><a class="button" href="#poll">Go to poll ↓</a></p>
       </div>
     </section>
@@ -37,7 +44,7 @@
     <section id="poll" class="section">
       <div class="wrap card center">
         <h2>Pick one</h2>
-        <p class="muted">Press one button below.</p>
+        <p class="muted">Press a button below.</p>
         <div class="poll">
           <button id="btnDollar" class="choice">$</button>
           <button id="btnHash" class="choice">#</button>
@@ -50,7 +57,7 @@
     <section id="about" class="section">
       <div class="wrap card">
         <h2>About this page</h2>
-        <p>This is a minimal, static site deployed with GitHub Pages. HTML gives structure, CSS gives style, and a pinch of JS adds behavior. Clean, simple, controllable.</p>
+        <p>This is a minimal static site deployed with GitHub Pages. HTML = structure, CSS = style, JS = behavior. We’ll add a backend later if we want global stats.</p>
         <div class="features">
           <div class="feature">
             <h3>Simple</h3>
@@ -58,7 +65,7 @@
           </div>
           <div class="feature">
             <h3>Fast</h3>
-            <p>No backend yet means instant loads. We’ll add one later for global votes.</p>
+            <p>No server logic means instant loads for now.</p>
           </div>
           <div class="feature">
             <h3>Upgradeable</h3>
@@ -72,7 +79,7 @@
     <section id="contact" class="section">
       <div class="wrap card center">
         <h2>Contact</h2>
-        <p class="muted">Form placeholder (no backend). We can wire it later.</p>
+        <p class="muted">Form placeholder (no backend yet). We can wire it later.</p>
         <form class="contact" onsubmit="event.preventDefault(); alert('Pretend sent!');">
           <input type="text" placeholder="Your name" required>
           <input type="email" placeholder="you@example.com" required>
@@ -85,7 +92,7 @@
 
   <footer class="footer">
     <div class="wrap">
-      <small>© <span id="y"></span> First-try · Built on GitHub Pages</small>
+      <small>© <span id="y"></span> Bounty · Built on GitHub Pages</small>
     </div>
   </footer>
 
