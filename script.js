@@ -1,107 +1,97 @@
-// YEAR
-document.getElementById('year').textContent = new Date().getFullYear();
+/* ========= small niceties ========= */
+// current year
+document.getElementById("year").textContent = new Date().getFullYear();
 
-// DONATE WIDGET
-function waitForModalAndOpen(timeoutMs = 5000){
-  const start = Date.now();
-  (function tryOpen(){
-    if (typeof window.openModal === 'function'){
-      try { window.openModal(); } catch(e){ console.error(e); }
-    } else if (Date.now() - start < timeoutMs){
-      setTimeout(tryOpen, 250);
-    } else {
-      alert('Donation widget is still loading. Please try again in a moment.');
-    }
-  })();
-}
-function handleDonate(ev){ ev?.preventDefault(); waitForModalAndOpen(); }
-
-document.querySelectorAll('.donateBtn').forEach(b => b.addEventListener('click', handleDonate));
-document.getElementById('donateBtnTop')?.addEventListener('click', handleDonate);
-document.getElementById('donateNav')?.addEventListener('click', handleDonate);
-
-// SCROLL-IN ANIMATIONS
-const observer = new IntersectionObserver((entries)=>{
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-},{threshold:0.15});
-document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-// STATS COUNTER
-function counter(el){
-  const to = Number(el.dataset.to || 0);
-  const start = 0;
-  const dur = 1200;
-  const t0 = performance.now();
-  function tick(now){
-    const p = Math.min(1, (now - t0)/dur);
-    el.textContent = Math.round(start + (to-start)*p);
-    if (p < 1) requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-}
-const statObs = new IntersectionObserver((entries)=>{
-  entries.forEach(e => {
-    if (e.isIntersecting){
-      e.target.querySelectorAll('.num').forEach(counter);
-      statObs.unobserve(e.target);
+// smooth scroll for internal links (offset for sticky header)
+const header = document.querySelector(".site-header");
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener("click", e=>{
+    const id = a.getAttribute("href");
+    if (id.length > 1) {
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      const top = target.getBoundingClientRect().top + window.scrollY - (header?.offsetHeight || 0) - 8;
+      window.scrollTo({ top, behavior:"smooth" });
     }
   });
-},{threshold:0.4});
-document.querySelectorAll('.stat-card').forEach(s => statObs.observe(s));
-
-// GALLERY SLIDER
-(function initGallery(){
-  const track = document.getElementById('galleryTrack');
-  if (!track) return;
-
-  // List your filenames here (add more as you upload to assets/gallery/)
-  const files = [
-    // put your real filenames (case-sensitive):
-    // Example placeholders:
-    'DSC04198.JPG','DSC04152.JPG','DSC04150.JPG','DSC04148.JPG',
-    'DSC04229.JPG','DSC04223.JPG','DSC04222.JPG','DSC04219.JPG'
-  ];
-
-  // Build slides
-  files.forEach(name => {
-    const img = document.createElement('img');
-    img.alt = 'Shelter photo';
-    img.loading = 'lazy';
-    img.src = `assets/gallery/${name}`;
-    track.appendChild(img);
-  });
-
-  let index = 0;
-  function update(){ track.style.transform = `translateX(-${index * 100}%)`; }
-  const prev = document.querySelector('.slider .prev');
-  const next = document.querySelector('.slider .next');
-  prev?.addEventListener('click', ()=>{ index = (index - 1 + files.length) % files.length; update(); });
-  next?.addEventListener('click', ()=>{ index = (index + 1) % files.length; update(); });
-
-  // Swipe (mobile)
-  let startX = 0;
-  track.addEventListener('touchstart', e => startX = e.touches[0].clientX, {passive:true});
-  track.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - startX;
-    if (Math.abs(dx) > 40) {
-      index = (index + (dx < 0 ? 1 : -1) + files.length) % files.length;
-      update();
-    }
-  });
-})();
-
-// ACTIVE LINK ON SCROLL (simple)
-const sections = ['mission','help','donate','stories','gallery','faq','contact'];
-const links = new Map(sections.map(id => [id, document.querySelector(`.nav a[href="#${id}"]`)]));
-const secObs = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    const id = e.target.id;
-    const link = links.get(id);
-    if (!link) return;
-    if (e.isIntersecting){ links.forEach(l => l?.classList.remove('active')); link.classList.add('active'); }
-  });
-},{rootMargin:'-40% 0px -55% 0px', threshold:0});
-sections.forEach(id => {
-  const el = document.getElementById(id);
-  if (el) secObs.observe(el);
 });
+
+/* ========= Donation widget bootstrap (robust) ========= */
+const DONATION_WIDGET_SRC = "https://dalyandog.net/_nuxt/assets/index.js";
+
+let widgetLoaded = new Promise((resolve, reject) => {
+  const already = [...document.scripts].some(s => s.src === DONATION_WIDGET_SRC);
+  if (already && typeof window.openModal === "function") {
+    resolve();
+    return;
+  }
+
+  if (!already) {
+    const s = document.createElement("script");
+    s.type = "module";
+    s.src = DONATION_WIDGET_SRC;
+    s.onload = () => resolve();
+    s.onerror = () => reject(new Error("Donation widget failed to load"));
+    document.head.appendChild(s);
+  } else {
+    // If script tag exists but openModal not ready yet, wait briefly
+    const start = Date.now();
+    (function waitReady(){
+      if (typeof window.openModal === "function") return resolve();
+      if (Date.now() - start > 6000) return reject(new Error("Donation widget not ready"));
+      requestAnimationFrame(waitReady);
+    })();
+  }
+});
+
+document.getElementById("donateBtn")?.addEventListener("click", async (e)=>{
+  e.preventDefault();
+  try {
+    await widgetLoaded;
+    if (typeof window.openModal === "function") {
+      window.openModal();
+    } else {
+      // final fallback (no alerts)
+      window.location.href = "mailto:dalyandog@gmail.com?subject=Donate%20to%20Dalyan%20Dog";
+    }
+  } catch {
+    window.location.href = "mailto:dalyandog@gmail.com?subject=Donate%20to%20Dalyan%20Dog";
+  }
+});
+
+/* ========= Gallery bootstrap =========
+   Drop photos inside: assets/gallery/
+   (JPG/PNG/WebP). If at least one image exists and you reference it below,
+   the grid renders. Until then, the placeholder text remains.
+*/
+
+// OPTION A (simple): add file names here when you upload them:
+const GALLERY_FILES = [
+  // Example names (replace with your real ones after upload):
+  // "DSC04150.JPG", "DSC04152.JPG", "DSC04215.JPG"
+].map(n => `assets/gallery/${n}`);
+
+// Render if we have any items listed:
+(function renderGallery() {
+  const grid = document.getElementById("galleryGrid");
+  const ph   = document.getElementById("galleryPlaceholder");
+  if (!grid) return;
+
+  if (GALLERY_FILES.length === 0) {
+    ph?.removeAttribute("hidden");
+    grid.setAttribute("aria-busy","false");
+    return;
+  }
+
+  ph?.remove();
+  GALLERY_FILES.forEach(src => {
+    const img = new Image();
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.alt = "Shelter photo";
+    img.src = src;
+    grid.appendChild(img);
+  });
+  grid.setAttribute("aria-busy","false");
+})();
