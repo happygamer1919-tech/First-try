@@ -1,28 +1,24 @@
-// Simple one-vote-per-browser behavior + footer year
-const K_VOTED = "has_voted_simple_poll";
-const $ = (sel) => document.querySelector(sel);
+// Year in footer
+document.getElementById('year').textContent = new Date().getFullYear();
 
-const btnDollar = $("#btnDollar");
-const btnHash   = $("#btnHash");
-const thanks    = $("#thanks");
-
-// Footer year
-const y = $("#y");
-if (y) y.textContent = new Date().getFullYear();
-
-function render(){
-  const voted = localStorage.getItem(K_VOTED) === "yes";
-  [btnDollar, btnHash].forEach(b => b.disabled = voted);
-  if (thanks) thanks.classList.toggle("hidden", !voted);
+// Open the provider's wallet modal once their script defines window.openModal()
+function waitForModalAndOpen(timeoutMs = 4000){
+  const start = Date.now();
+  (function tryOpen(){
+    if (typeof window.openModal === 'function'){
+      try { window.openModal(); } catch (e) { console.error(e); }
+    } else if (Date.now() - start < timeoutMs){
+      setTimeout(tryOpen, 250);
+    } else {
+      alert('Donation widget is still loading. Please try again in a moment.');
+    }
+  })();
 }
 
-function vote(){
-  if (localStorage.getItem(K_VOTED) === "yes") return;
-  localStorage.setItem(K_VOTED, "yes");
-  render();
+function handleDonateClick(ev){
+  if (ev) ev.preventDefault();
+  waitForModalAndOpen();
 }
 
-btnDollar?.addEventListener("click", vote);
-btnHash?.addEventListener("click", vote);
-
-render();
+document.getElementById('donateBtn')?.addEventListener('click', handleDonateClick);
+document.getElementById('donateNav')?.addEventListener('click', handleDonateClick);
