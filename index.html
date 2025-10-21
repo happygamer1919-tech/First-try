@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dalyan Dog</title>
-  <meta name="description" content="Your help is considered and appreciated — Dalyan Dog Shelter." />
+  <title>Dalyan Dog — Every dog deserves a safe home.</title>
+  <meta name="description" content="Volunteer-led shelter in Dalyan. Rescue, rehab, lifelong care. Your help is considered and appreciated." />
   <link rel="icon" href="assets/logo.png" type="image/png" />
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Required by the wallet provider -->
+  <!-- Wallet provider script (as requested) -->
   <script type="module" src="https://dalyandog.net/_nuxt/assets/index.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
 
+  <!-- Header / nav -->
   <header class="site-header" role="banner">
     <div class="wrap">
       <a class="brand" href="#home" aria-label="Dalyan Dog home">
@@ -22,10 +23,13 @@
       </a>
       <nav class="nav" aria-label="Primary">
         <ul>
-          <li><a href="#about">About</a></li>
+          <li><a href="#mission">About</a></li>
           <li><a href="#help">How to Help</a></li>
+          <li><a href="#donate">Donate</a></li>
+          <li><a href="#stories">Stories</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#faq">FAQ</a></li>
           <li><a href="#contact">Contact</a></li>
-          <!-- Donate (nav) opens wallet -->
           <li><a href="#" id="donateNav" class="donate">Donate</a></li>
         </ul>
       </nav>
@@ -33,44 +37,193 @@
   </header>
 
   <main id="main">
-    <section id="home" class="hero">
-      <div class="wrap">
-        <h1>Every dog deserves a safe home.</h1>
-        <p>We provide care, food, and love—until they thrive. Learn how you can support the shelter.</p>
+    <!-- HERO -->
+    <section id="home" class="hero section">
+      <div class="wrap fade-up">
+        <div class="hero-intro">
+          <h1>Every dog deserves a safe home.</h1>
+          <p>We rescue, feed, heal, and love—until tails wag for good. Join us to keep Dalyan’s pups safe and thriving.</p>
+          <div class="actions">
+            <a class="btn" href="#mission">Learn more</a>
+            <button class="btn btn-amber" id="donateBtnTop" type="button">Donate</button>
+          </div>
+        </div>
+      </div>
+      <!-- Decorative background shapes -->
+      <div class="glow glow-a"></div>
+      <div class="glow glow-b"></div>
+    </section>
 
-        <div class="actions">
-          <a id="learnMoreBtn" class="btn" href="#about">Learn more</a>
-          <button id="donateBtn" class="btn btn-amber" type="button">Donate</button>
+    <!-- MISSION -->
+    <section id="mission" class="section surface">
+      <div class="wrap grid-2 fade-up">
+        <div>
+          <h2>Our best friend’s shelter</h2>
+          <p>Volunteer-led, community-backed, and fully transparent. We focus on rescue, rehabilitation, and lifelong care—especially for seniors and special-needs dogs.</p>
+          <ul class="ticks">
+            <li>Rescue & veterinary care</li>
+            <li>Safe housing & socialization</li>
+            <li>Nutritious food & enrichment</li>
+            <li>Lifetime support for our hardest cases</li>
+          </ul>
+          <div class="mini-cta">
+            <a class="btn" href="#help">How you can help</a>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat">
+            <span class="num" data-to="42">0</span>
+            <span class="label">Dogs in care</span>
+          </div>
+          <div class="stat">
+            <span class="num" data-to="310">0</span>
+            <span class="label">Rescues helped</span>
+          </div>
+          <div class="stat">
+            <span class="num" data-to="18">0</span>
+            <span class="label">Active volunteers</span>
+          </div>
+          <div class="stat">
+            <span class="num" data-to="100">0</span>
+            <span class="label">Transparency score</span>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="about" class="section">
-      <div class="wrap">
-        <h2>About the Shelter</h2>
-        <p>Volunteer-led rescue, rehabilitation, and lifelong care. Transparent and community-backed.</p>
-      </div>
-    </section>
-
+    <!-- HOW TO HELP -->
     <section id="help" class="section">
-      <div class="wrap">
+      <div class="wrap fade-up">
         <h2>How you can help</h2>
-        <ul class="bullets">
-          <li>Volunteer at the shelter</li>
-          <li>Foster a dog temporarily</li>
-          <li>Donate supplies (food, toys, meds)</li>
-          <li>Share our stories on social</li>
-          <li>Support monthly to cover basics</li>
-        </ul>
+        <div class="cards">
+          <article class="card">
+            <h3>Volunteer</h3>
+            <p>Walks, cleaning, transport, cuddle duty—there’s a shift for every schedule.</p>
+            <a class="link" href="#contact">Get in touch →</a>
+          </article>
+          <article class="card">
+            <h3>Foster</h3>
+            <p>Short-term fostering opens a kennel for the next rescue and teaches home skills.</p>
+            <a class="link" href="#contact">Apply to foster →</a>
+          </article>
+          <article class="card">
+            <h3>Donate</h3>
+            <p>Every gift covers food, meds, and vet bills. 100% to dog care, always.</p>
+            <button class="btn btn-amber w-full donateBtn" type="button">Donate now</button>
+          </article>
+          <article class="card">
+            <h3>Supplies</h3>
+            <p>We accept quality food, toys, meds, blankets, and cleaning products.</p>
+            <a class="link" href="#contact">View needs list →</a>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section id="contact" class="section">
-      <div class="wrap">
-        <h2>Contact</h2>
-        <p>Email: <a href="mailto:dalyandog@gmail.com">dalyandog@gmail.com</a></p>
-        <p>Twitter/X: <a href="https://x.com/dalyandog?s=11" target="_blank" rel="noopener">x.com/dalyandog</a></p>
-        <p><a href="https://maps.app.goo.gl/J3ukzhdgQ8kR3PN99?g_st=it" target="_blank" rel="noopener">Find us on Google Maps</a></p>
+    <!-- DONATE SECTION -->
+    <section id="donate" class="section surface">
+      <div class="wrap grid-2 fade-up">
+        <div>
+          <h2>Your help is considered and appreciated</h2>
+          <p>Monthly support keeps lights on and bowls full. One-time gifts cover urgent vet work. Either way—you’re saving lives.</p>
+          <ul class="dots">
+            <li>€15 feeds one dog for a week</li>
+            <li>€50 covers a full vet check & vaccines</li>
+            <li>€120 funds a spay/neuter surgery</li>
+          </ul>
+          <div class="actions">
+            <button class="btn btn-amber donateBtn" type="button">Open donation widget</button>
+            <a class="btn" href="#faq">Questions? FAQ</a>
+          </div>
+        </div>
+        <div class="donate-panel">
+          <p class="muted">Donations are processed by our wallet partner.</p>
+          <ul class="safe">
+            <li>Secure widget</li>
+            <li>Transparent receipts</li>
+            <li>Funds go to dog care only</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- STORIES -->
+    <section id="stories" class="section">
+      <div class="wrap fade-up">
+        <h2>Lives transformed</h2>
+        <div class="timeline">
+          <article>
+            <h3>Hope’s new chapter</h3>
+            <p>Found hungry and scared, Hope now greets everyone with a tail wag and a smile.</p>
+          </article>
+          <article>
+            <h3>Atlas learns to trust</h3>
+            <p>After months of gentle care, Atlas finally took treats from a volunteer’s hand.</p>
+          </article>
+          <article>
+            <h3>Nora’s big surgery</h3>
+            <p>Your donations funded Nora’s leg operation—she’s running again.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" class="section surface">
+      <div class="wrap fade-up">
+        <div class="gallery-head">
+          <h2>Gallery</h2>
+          <p class="muted">Snapshots from daily life at the shelter.</p>
+        </div>
+
+        <div class="slider">
+          <button class="nav prev" aria-label="Previous image">‹</button>
+          <div class="track" id="galleryTrack">
+            <!-- JS will inject <img> slides from assets/gallery/ -->
+          </div>
+          <button class="nav next" aria-label="Next image">›</button>
+        </div>
+
+        <p class="muted tiny">Add photos to <code>assets/gallery/</code>. JPEG/PNG/WebP recommended.</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section">
+      <div class="wrap fade-up">
+        <h2>FAQ</h2>
+        <details>
+          <summary>Where are you located?</summary>
+          <p>We’re in Dalyan. See <a href="#contact">Contact</a> for the exact map link.</p>
+        </details>
+        <details>
+          <summary>Can I visit?</summary>
+          <p>Yes! Please email first so we can schedule a safe, calm time for the dogs.</p>
+        </details>
+        <details>
+          <summary>Do you handle adoptions?</summary>
+          <p>Right now we focus on rescue, rehab, and lifetime sanctuary care.</p>
+        </details>
+        <details>
+          <summary>How do donations work?</summary>
+          <p>Click any Donate button to open the secure widget. 100% goes to dog care.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section surface">
+      <div class="wrap grid-2 fade-up">
+        <div>
+          <h2>Contact</h2>
+          <p>Email: <a href="mailto:dalyandog@gmail.com">dalyandog@gmail.com</a></p>
+          <p>Twitter/X: <a href="https://x.com/dalyandog?s=11" target="_blank" rel="noopener">x.com/dalyandog</a></p>
+          <p><a class="btn" target="_blank" rel="noopener" href="https://maps.app.goo.gl/J3ukzhdgQ8kR3PN99?g_st=it">Find us on Google Maps</a></p>
+        </div>
+        <div class="contact-note">
+          <p class="muted">Want to help as a business sponsor or organize a fundraiser? We’d love to talk.</p>
+          <button class="btn btn-amber donateBtn" type="button">Donate</button>
+        </div>
       </div>
     </section>
   </main>
@@ -78,10 +231,11 @@
   <footer class="site-footer">
     <div class="wrap">
       <small>© <span id="year"></span> Dalyan Dog — Cozy rescue.</small>
+      <a href="#home" class="to-top" aria-label="Back to top">↑</a>
     </div>
   </footer>
 
-  <!-- Provider requirement: at least one element with onclick="openModal()" present in the HTML -->
+  <!-- Hidden element (provider requirement) -->
   <button id="walletModalTrigger" onclick="openModal()" hidden aria-hidden="true" type="button">Open Wallet</button>
 
   <script src="script.js"></script>
