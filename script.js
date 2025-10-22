@@ -1,5 +1,5 @@
-/* Smooth scroll for nav links */
-document.querySelectorAll('.nav a[href^="#"]').forEach(a => {
+/* ========= Smooth scroll for nav ========= */
+document.querySelectorAll('.nav a[href^="#"], .brand[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();
     const id = a.getAttribute('href');
@@ -7,72 +7,94 @@ document.querySelectorAll('.nav a[href^="#"]').forEach(a => {
   });
 });
 
-/* Year in footer */
+/* ========= Dynamic year ========= */
 document.getElementById('year').textContent = new Date().getFullYear();
 
-/* Wallet donate integration
-   - We call the host's openModal() when it exists.
-   - If their script isn't ready yet, we show a friendly message. */
-function donateNow(){
+/* ========= Donate (host wallet modal) =========
+   Tries window.openModal() from the host’s script.
+   Shows friendly fallback if not yet ready. */
+window.donateNow = function () {
   if (typeof window.openModal === 'function') {
-    try { window.openModal(); }
-    catch (e) { alert('Donation widget not available right now. Please try again shortly.'); }
+    try { window.openModal(); return; }
+    catch (e) { /* fall through */ }
+  }
+  alert('Donation widget not available right now. Please try again shortly.');
+};
+
+/* ========= Gallery (slideshow) ========= */
+
+/* Fallback array if you don’t set data-files in HTML */
+const GALLERY_FILES = [
+  'DSC04148_result.JPG',
+  'DSC04150_result.JPG',
+];
+
+let galleryFiles = [];
+let currentIndex = 0;
+
+(function setupGalleryPreview () {
+  const preview = document.getElementById('galleryPreview');
+  if (!preview) return;
+
+  // Read list from data-files (case-sensitive)
+  const attr = (preview.getAttribute('data-files') || '').trim();
+  galleryFiles = attr ? attr.split(',').map(s => s.trim()).filter(Boolean) : GALLERY_FILES.slice();
+
+  // Build preview tile
+  const tile = preview.querySelector('.preview-tile');
+  const imgEl = tile.querySelector('img');
+  const countEl = tile.querySelector('.count');
+
+  if (galleryFiles.length) {
+    imgEl.src = `assets/gallery/${galleryFiles[0]}`;
   } else {
-    alert('Donation widget is still loading. Please try again in a moment.');
+    imgEl.style.background = '#1c293d';
   }
-}
-window.donateNow = donateNow; // make callable from inline onclick
+  countEl.textContent = `(${galleryFiles.length})`;
 
-/* ----- Gallery loader -----
-   Priority:
-   1) Try assets/gallery/manifest.json (JSON array of filenames)
-   2) Fallback to data-files attribute on #galleryGrid
--------------------------------- */
-async function loadGallery() {
-  const grid = document.getElementById('galleryGrid');
-  if (!grid) return;
+  tile.addEventListener('click', () => openLightboxAt(0));
+})();
 
-  let files = [];
+/* --- Lightbox controls --- */
+function openLightboxAt (index) {
+  if (!galleryFiles.length) return;
+  currentIndex = ((index % galleryFiles.length) + galleryFiles.length) % galleryFiles.length;
 
-  // Try manifest.json
-  try {
-    const res = await fetch('assets/gallery/manifest.json', { cache: 'no-store' });
-    if (res.ok) {
-      const arr = await res.json();
-      if (Array.isArray(arr)) files = arr.map(String);
-    }
-  } catch (_) { /* ignore */ }
+  const lb = document.getElementById('lightbox');
+  const img = lb.querySelector('.lightbox__img');
+  const idx = lb.querySelector('.lightbox__index');
+  const tot = lb.querySelector('.lightbox__total');
 
-  // Fallback: data-files
-  if (!files.length) {
-    const attr = (grid.dataset.files || '').trim();
-    if (attr) files = attr.split(',').map(s => s.trim()).filter(Boolean);
-  }
+  img.src = `assets/gallery/${galleryFiles[currentIndex]}`;
+  img.alt = galleryFiles[currentIndex];
+  idx.textContent = (currentIndex + 1);
+  tot.textContent = galleryFiles.length.toString();
 
-  // Render
-  grid.innerHTML = '';
-  if (!files.length) {
-    grid.innerHTML = `<p class="hint">No images listed yet.</p>`;
-    return;
-  }
-
-  for (const name of files) {
-    // Be exact with filename case; files live in assets/gallery/
-    const href = `assets/gallery/${name}`;
-    const a = document.createElement('a');
-    a.href = href;
-    a.className = 'gallery-item';
-    a.target = '_blank';
-    a.rel = 'noopener';
-
-    const img = document.createElement('img');
-    img.src = href;
-    img.alt = 'Shelter photo';
-    img.loading = 'lazy';
-
-    a.appendChild(img);
-    grid.appendChild(a);
-  }
+  lb.classList.add('open');
+  lb.setAttribute('aria-hidden', 'false');
 }
 
-document.addEventListener('DOMContentLoaded', loadGallery);
+window.closeLightbox = function () {
+  const lb = document.getElementById('lightbox');
+  const img = lb.querySelector('.lightbox__img');
+  img.src = ''; img.alt = '';
+  lb.classList.remove('open');
+  lb.setAttribute('aria-hidden', 'true');
+};
+
+window.nextImage = function () { openLightboxAt(currentIndex + 1); };
+window.prevImage = function () { openLightboxAt(currentIndex - 1); };
+
+// Close when clicking backdrop
+document.getElementById('lightbox')?.addEventListener('click', (e) => {
+  if (e.target.id === 'lightbox') closeLightbox();
+});
+
+// Keyboard: ESC closes; ← / → navigate
+document.addEventListener('keydown', (e) => {
+  const lbOpen = document.getElementById('lightbox')?.classList.contains('open');
+  if (!lbOpen) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowRight') nextImage();
+  if (e.key === 'ArrowLeft')  prevImage();
+});
